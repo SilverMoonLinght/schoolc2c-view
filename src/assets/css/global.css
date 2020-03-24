@@ -1,0 +1,14 @@
+html,
+body,
+#app,
+.el-container {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+}
+
+.el-breadcrumb {
+    margin-bottom: 15px;
+    font-size: 15px;
+}

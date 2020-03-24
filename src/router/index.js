@@ -1,27 +1,65 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import adminLoginView from '../views/adminLoginView.vue'
+import adminHomeView from '../views/adminHomeView.vue'
+import welcome from '../components/welcome.vue'
+import userListView from '../components/userListView.vue'
+import productsCatalogView from '../components/productsCatalogView.vue'
+import userLoginRegisterView from '../views/userLoginRegisterView.vue'
+import userLogin from '../components/userLogin.vue'
+import homeView from '../views/homeView.vue'
+import productView from '../components/productView.vue'
+import releaseProductView from '../components/releaseProductView.vue'
 
 Vue.use(VueRouter)
 
-const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
-]
 
 const router = new VueRouter({
-  routes
+
+  routes: [{
+      path: '/adminLoginView',
+      component: adminLoginView
+    },
+    {
+      path: '/adminHomeView',
+      component: adminHomeView,
+      redirect: '/welcome',
+      children: [{
+          path: '/welcome',
+          component: welcome
+        },
+        {
+          path: '/userList',
+          component: userListView
+        },
+        {
+          path: '/productsCatalog',
+          component: productsCatalogView
+        }
+      ]
+    },
+    {
+      path: '/userLoginRegisterView',
+      component: userLoginRegisterView,
+      children: [{
+        path: '/userLogin',
+        component: userLogin
+      }]
+    },
+    {
+      path: '/home',
+      component: homeView,
+      children: [{
+          path: '/productList',
+          component: productView
+        },
+        {
+          path: '/releaseProduct',
+          component: releaseProductView
+        }
+      ]
+    }
+  ]
 })
 
 export default router
