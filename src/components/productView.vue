@@ -207,7 +207,6 @@ export default {
           params: this.queryInfo
         }
       );
-      console.log(resPList);
       if (
         this.resPList?.productInfoList === null ||
         this.resPList?.productInfoList.length === 0

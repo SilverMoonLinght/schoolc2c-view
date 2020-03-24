@@ -71,10 +71,8 @@
           <el-upload
             action="http://127.0.0.1:8084/imgUpload"
             list-type="picture-card"
-            :auto-upload="false"
             ref="uploadRef"
             :limit="1"
-            :before-upload="getImgUrl"
             :on-success="onSuccess"
           >
             <i slot="default" class="el-icon-plus"></i>
@@ -152,9 +150,12 @@ export default {
       );
       this.catalog = resCatalog;
     },
-    submit() {
-      this.$refs.uploadRef.submit();
+    async submit() {
       console.log(this.releaseProductForm);
+      const { data: res } = await this.$http.post(
+        "http://127.0.0.1:8084/releaseProduct",
+        this.releaseProductForm
+      );
     },
     handleChange() {
       this.releaseProductForm.catalog3Id = this.selectCatalog[
@@ -169,11 +170,9 @@ export default {
     handleRemove(file) {
       this.$refs.uploadRef.clearFiles();
     },
-    getImgUrl(file) {
-      this.releaseProductForm.imgUrl = "http://1.1.1.1/" + file.name;
-    },
     onSuccess(res) {
       console.log(res);
+      this.releaseProductForm.imgUrl = res;
     }
   }
 };
