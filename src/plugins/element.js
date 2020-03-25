@@ -38,10 +38,12 @@ import {
     CarouselItem,
     Image,
     Option,
-    Upload
+    Upload,
+    Avatar
 } from 'element-ui'
 
 
+Vue.use(Avatar)
 Vue.use(Upload)
 Vue.use(Option)
 Vue.use(Image)

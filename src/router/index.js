@@ -10,6 +10,7 @@ import userLogin from '../components/userLogin.vue'
 import homeView from '../views/homeView.vue'
 import productView from '../components/productView.vue'
 import releaseProductView from '../components/releaseProductView.vue'
+import productInfoView from '../components/productInfoView.vue'
 
 Vue.use(VueRouter)
 
@@ -48,6 +49,7 @@ const router = new VueRouter({
     },
     {
       path: '/home',
+      redirect: '/productList',
       component: homeView,
       children: [{
           path: '/productList',
@@ -56,6 +58,11 @@ const router = new VueRouter({
         {
           path: '/releaseProduct',
           component: releaseProductView
+        },
+        {
+          path: '/productInfo/',
+          name: 'productInfo',
+          component: productInfoView
         }
       ]
     }

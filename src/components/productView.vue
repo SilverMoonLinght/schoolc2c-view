@@ -80,12 +80,12 @@
           v-for="item in productList"
           :key="item.id"
         >
-          <a href="">
+          <router-link :to="{ name: 'productInfo', query: { id: item.id } }">
             <el-card :body-style="{ padding: '10px' }">
               <el-image
                 style="width:260px;height:270px"
                 :fit="fit"
-                :src="item.srcUrl"
+                :src="item.imgUrl"
               >
                 <div slot="error">
                   <i class="el-icon-picture-outline"></i>
@@ -100,7 +100,7 @@
                 </p>
               </div>
             </el-card>
-          </a>
+          </router-link>
         </el-col>
       </el-row>
       <el-pagination
@@ -120,7 +120,7 @@
 export default {
   data() {
     return {
-      fit: "contain",
+      fit: "cover",
       images: [
         { id: 0, imgUrl: require("../assets/img/1822.jpg_wh1200.jpg") },
         {
