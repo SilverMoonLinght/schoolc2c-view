@@ -6,7 +6,7 @@
           <el-image
             style="width: 300px; height: 300px"
             :fit="fit"
-            :src="productInfo.imgUrl"
+            :src="imgUrl"
           >
           </el-image>
         </el-col>
@@ -71,6 +71,7 @@ export default {
   data() {
     return {
       fit: "contain",
+      imgUrl: "",
       productInfo: {},
       message: {
         uid: "",
@@ -79,13 +80,18 @@ export default {
       },
       comment: [],
       user: {},
-      queryInfo: { id: "" }
+      queryInfo: { id: "" },
+      token: ""
     };
   },
   created() {
+    this.getToken();
     this.getProductInfo();
   },
   methods: {
+    getToken() {
+      this.token = localStorage.getItem("token");
+    },
     async getProductInfo() {
       this.queryInfo.id = this.$route.query.id;
       const { data: res } = await this.$http.get(
@@ -95,10 +101,15 @@ export default {
         }
       );
       this.productInfo = res;
-      console.log(res);
+      this.imgUrl = this.productInfo.imgUrl;
     },
     textCommit() {
-      console.log(this.productInfo);
+      if (this.token === null) {
+        this.$Message.success("请登录后留言");
+        return this.$router.push(
+          "/userLogin?rUrl=" + this.$route.path + "?id=" + this.queryInfo.id
+        );
+      }
     }
   }
 };

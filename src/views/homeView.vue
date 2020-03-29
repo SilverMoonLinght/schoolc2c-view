@@ -5,8 +5,25 @@
         <div class="title">
           <a href="/#/home"><p>校园二手交易</p></a>
         </div>
-        <el-row :gutter="20" align="middle">
-          <el-col :span="2" :offset="17" class="dropDown">
+        <div class="userBox" :style="userBox">
+          <div class="avatar">
+            <el-avatar size="medium" :src="circleUrl"></el-avatar>
+          </div>
+          <div class="dropDownUser">
+            <el-dropdown @command="userCenter">
+              <span class="el-dropdown-link">
+                个人中心<i class="el-icon-arrow-down el-icon--right"></i>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="c">个人信息</el-dropdown-item>
+                <el-dropdown-item command="d">修改密码</el-dropdown-item>
+                <el-dropdown-item command="e">注销</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
+        </div>
+        <el-row :gutter="20" align="middle" :style="rowBox">
+          <el-col :span="2" :offset="17" class="dropDown" :style="dropDown">
             <el-dropdown @command="handleCommand">
               <span class="el-dropdown-link">
                 发布<i class="el-icon-arrow-down el-icon--right"></i>
@@ -17,11 +34,11 @@
               </el-dropdown-menu>
             </el-dropdown>
           </el-col>
-          <el-col :span="2" class="userDo">
-            <a href="/#/userLogin"><p>登录</p></a>
+          <el-col :span="2" class="userDo" :style="userDo">
+            <router-link to="/userLogin"><p>登录</p></router-link>
           </el-col>
-          <el-col :span="2" class="userDo">
-            <a href="/#/userRegister"><p>注册</p></a>
+          <el-col :span="2" class="userDo" :style="userDo">
+            <router-link to="/userRegister"><p>注册</p></router-link>
           </el-col>
         </el-row>
       </div>
@@ -35,12 +52,56 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      token: "",
+      circleUrl:
+        "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
+      rowBox: { width: null },
+      dropDown: { margin: null },
+      userBox: { display: "none" },
+      userDo: { display: null }
+    };
+  },
+  created() {
+    this.getToken();
+    this.getUserByToken();
   },
   methods: {
     handleCommand(command) {
       if (command == "a") {
         this.$router.push({ path: "/releaseProduct" });
+      }
+    },
+    userCenter(command) {},
+    getToken() {
+      this.token = localStorage.getItem("token");
+      if (this.token !== null) {
+        this.rowBox.width = "90%";
+        this.dropDown.margin = "20px 0 0 79%";
+        this.userBox.display = null;
+        this.userDo.display = "none";
+      }
+      if (this.token === null) {
+        this.rowBox.width = null;
+        this.dropDown.margin = null;
+      }
+    },
+    async getUserByToken() {
+      console.log(this.token);
+      if (this.token !== null) {
+        const { data: res } = await this.$http.post(
+          "http://127.0.0.1:8082/getUserByToken",
+          this.token
+        );
+        console.log(res);
+        if (res === "fail") {
+          this.$Message.error("登录认证时间过期!");
+          localStorage.removeItem("token");
+          this.getToken();
+        }
+        if (res.icon !== null) {
+          this.circleUrl = res.icon;
+        }
       }
     }
   }
@@ -70,13 +131,28 @@ a {
   color: #000;
   text-decoration: none;
 }
+
 .userDo {
   width: 54px;
 }
 .dropDown {
   margin-top: 20px;
 }
+.dropDownUser {
+  margin-top: 20px;
+}
 .el-dropdown-link {
   cursor: pointer;
+}
+.userBox {
+  width: 130px;
+  position: absolute;
+  left: 83%;
+  line-height: 1;
+}
+.avatar {
+  margin-top: 10px;
+  float: left;
+  margin-right: 10px;
 }
 </style>

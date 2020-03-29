@@ -11,6 +11,7 @@ import homeView from '../views/homeView.vue'
 import productView from '../components/productView.vue'
 import releaseProductView from '../components/releaseProductView.vue'
 import productInfoView from '../components/productInfoView.vue'
+import userRegisterView from '../components/userRegisterView.vue'
 
 Vue.use(VueRouter)
 
@@ -43,9 +44,14 @@ const router = new VueRouter({
       path: '/userLoginRegisterView',
       component: userLoginRegisterView,
       children: [{
-        path: '/userLogin',
-        component: userLogin
-      }]
+          path: '/userLogin',
+          component: userLogin
+        },
+        {
+          path: '/userRegister',
+          component: userRegisterView
+        }
+      ]
     },
     {
       path: '/home',

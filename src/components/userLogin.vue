@@ -50,24 +50,38 @@ export default {
           { required: true, message: "请输入用户名", trigger: "blur" }
         ],
         password: [{ required: true, message: "请输入密码", trigger: "blur" }]
-      }
+      },
+      url: null
     };
   },
+  created() {
+    this.getUrl();
+  },
   methods: {
+    getUrl() {
+      this.url = this.$route.query.rUrl;
+    },
     userLoginBtn() {
-      console.log(this.userLoginData);
       this.$refs.userLoginFormRef.validate(async valid => {
         if (!valid) return;
         const { data: res } = await this.$http.post(
           "http://127.0.0.1:8082/userLogin",
           this.userLoginData
         );
-        if (res) {
+        if (res === "fail") {
+          this.$Message.error("用户名或密码错误");
+        } else {
+          localStorage.setItem("token", res);
+          if (this.url) {
+            return this.$router.push(this.url);
+          }
           this.$router.push("/home");
         }
       });
     },
-    toRegisterBtn() {}
+    toRegisterBtn() {
+      this.$router.push("/userRegister");
+    }
   }
 };
 </script>
