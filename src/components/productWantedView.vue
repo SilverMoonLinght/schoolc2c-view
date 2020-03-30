@@ -1,17 +1,16 @@
 <template>
   <div class="cardBox">
     <el-card>
-      <h2 style="text-align:center">发布商品</h2>
-
+      <h2 style="text-align:center">发布求购</h2>
       <el-form
-        ref="releaseProductFormRef"
-        :model="releaseProductForm"
+        ref="productWantedFormRef"
+        :model="productWantedForm"
         label-width="80px"
       >
         <el-form-item label="商品名称">
           <el-input
             placeholder="请输入商品名称"
-            v-model="releaseProductForm.skuName"
+            v-model="productWantedForm.productName"
           >
           </el-input>
         </el-form-item>
@@ -22,32 +21,23 @@
             placeholder="请输入商品简介"
             maxlength="200"
             show-word-limit
-            v-model="releaseProductForm.skuDesc"
+            v-model="productWantedForm.description"
           >
           </el-input>
         </el-form-item>
         <el-form-item label="价格">
           <el-input
             style="width:50%"
-            placeholder="请输入价格"
-            v-model="releaseProductForm.price"
+            placeholder="请输入可接受价格"
+            v-model="productWantedForm.price"
           >
           </el-input>
-        </el-form-item>
-        <el-form-item label="商品分类">
-          <el-cascader
-            v-model="selectCatalog"
-            :options="catalog"
-            :props="props"
-            @change="handleChange"
-            clearable
-          ></el-cascader>
         </el-form-item>
         <el-form-item label="微信">
           <el-input
             style="width:50%"
             placeholder="微信，手机，QQ至少填一项"
-            v-model="releaseProductForm.wechat"
+            v-model="productWantedForm.wechat"
           >
           </el-input>
         </el-form-item>
@@ -55,7 +45,7 @@
           <el-input
             style="width:50%"
             placeholder="微信，手机，QQ至少填一项"
-            v-model="releaseProductForm.phone"
+            v-model="productWantedForm.phone"
           >
           </el-input>
         </el-form-item>
@@ -63,7 +53,7 @@
           <el-input
             style="width:50%"
             placeholder="微信，手机，QQ至少填一项"
-            v-model="releaseProductForm.qq"
+            v-model="productWantedForm.qq"
           >
           </el-input>
         </el-form-item>
@@ -115,25 +105,15 @@
 export default {
   data() {
     return {
-      releaseProductForm: {
-        skuName: "",
-        skuDesc: "",
+      productWantedForm: {
+        productName: "",
+        description: "",
         price: "",
-        catalog3Id: "",
         wechat: "",
         phone: "",
         qq: "",
         imgUrl: ""
       },
-      //   级联选择框
-      selectCatalog: [],
-      catalog: [],
-      props: {
-        value: "id",
-        label: "name",
-        children: "catalog"
-      },
-      //   图片
       disabled: false,
       dialogVisible: false,
       dialogImageUrl: "",
@@ -142,36 +122,10 @@ export default {
   },
   created() {
     this.getToken();
-    this.getCataList();
   },
   methods: {
     getToken() {
       this.token = localStorage.getItem("token");
-    },
-    //   获取分类数据
-    async getCataList() {
-      const { data: resCatalog } = await this.$http.get(
-        "http://127.0.0.1:8084/getCatalogList"
-      );
-      this.catalog = resCatalog;
-    },
-    async submit() {
-      if (this.token === null) {
-        this.$Message.error("请登录后发布商品!");
-        return this.$router.push("/userLogin?rUrl=" + this.$route.path);
-      }
-      const { data: res } = await this.$http.post(
-        "http://127.0.0.1:8084/releaseProduct",
-        this.releaseProductForm
-      );
-      if (res === 200) {
-        this.$Message.success("成功发布商品!");
-      }
-    },
-    handleChange() {
-      this.releaseProductForm.catalog3Id = this.selectCatalog[
-        this.selectCatalog.length - 1
-      ];
     },
     // 图片上传
     handlePictureCardPreview(file) {
@@ -182,7 +136,20 @@ export default {
       this.$refs.uploadRef.clearFiles();
     },
     onSuccess(res) {
-      this.releaseProductForm.imgUrl = res;
+      this.productWantedForm.imgUrl = res;
+    },
+    async submit() {
+      if (this.token === null) {
+        this.$Message.error("请登录后发布求购!");
+        return this.$router.push("/userLogin?rUrl=" + this.$route.path);
+      }
+      const { data: res } = await this.$http.post(
+        "http://127.0.0.1:8084/productWanted",
+        this.productWantedForm
+      );
+      if (res === "success") {
+        this.$Message.success("成功发布求购!");
+      }
     }
   }
 };

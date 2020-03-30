@@ -72,6 +72,9 @@ export default {
       if (command == "a") {
         this.$router.push({ path: "/releaseProduct" });
       }
+      if (command === "b") {
+        this.$router.push("/productWanted");
+      }
     },
     userCenter(command) {
       if (command == "e") {
