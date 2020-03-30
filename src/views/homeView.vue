@@ -51,6 +51,7 @@
 
 <script>
 export default {
+  inject: ["reload"],
   data() {
     return {
       token: "",
@@ -72,7 +73,12 @@ export default {
         this.$router.push({ path: "/releaseProduct" });
       }
     },
-    userCenter(command) {},
+    userCenter(command) {
+      if (command == "e") {
+        localStorage.removeItem("token");
+        this.reload();
+      }
+    },
     getToken() {
       this.token = localStorage.getItem("token");
       if (this.token !== null) {
@@ -87,13 +93,12 @@ export default {
       }
     },
     async getUserByToken() {
-      console.log(this.token);
       if (this.token !== null) {
         const { data: res } = await this.$http.post(
           "http://127.0.0.1:8082/getUserByToken",
           this.token
         );
-        console.log(res);
+
         if (res === "fail") {
           this.$Message.error("登录认证时间过期!");
           localStorage.removeItem("token");

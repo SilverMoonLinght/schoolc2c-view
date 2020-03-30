@@ -136,13 +136,18 @@ export default {
       //   图片
       disabled: false,
       dialogVisible: false,
-      dialogImageUrl: ""
+      dialogImageUrl: "",
+      token: ""
     };
   },
   created() {
+    this.getToken();
     this.getCataList();
   },
   methods: {
+    getToken() {
+      this.token = localStorage.getItem("token");
+    },
     //   获取分类数据
     async getCataList() {
       const { data: resCatalog } = await this.$http.get(
@@ -151,11 +156,17 @@ export default {
       this.catalog = resCatalog;
     },
     async submit() {
-      console.log(this.releaseProductForm);
+      if (this.token === null) {
+        this.$Message.error("请登录后发布商品!");
+        return this.$router.push("/userLogin?rUrl=" + this.$route.path);
+      }
       const { data: res } = await this.$http.post(
         "http://127.0.0.1:8084/releaseProduct",
         this.releaseProductForm
       );
+      if (res === 200) {
+        this.$Message.success("成功发布商品!");
+      }
     },
     handleChange() {
       this.releaseProductForm.catalog3Id = this.selectCatalog[
@@ -171,7 +182,6 @@ export default {
       this.$refs.uploadRef.clearFiles();
     },
     onSuccess(res) {
-      console.log(res);
       this.releaseProductForm.imgUrl = res;
     }
   }
