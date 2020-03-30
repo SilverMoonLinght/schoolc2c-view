@@ -87,6 +87,9 @@ export default {
       }
     },
     userCenter(command) {
+      if (command === "c") {
+        this.$router.push("/userInfo");
+      }
       if (command == "e") {
         localStorage.removeItem("token");
         this.reload();
@@ -107,10 +110,11 @@ export default {
     },
     async getUserByToken() {
       if (this.token !== null) {
-        const { data: res } = await this.$http.post(
-          "http://127.0.0.1:8082/getUserByToken",
-          this.token
-        );
+        const {
+          data: res
+        } = await this.$http.get("http://127.0.0.1:8082/getUserByToken", {
+          headers: { token: this.token }
+        });
 
         if (res === "fail") {
           this.$Message.error("登录认证时间过期!");

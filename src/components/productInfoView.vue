@@ -7,9 +7,20 @@
             style="width: 300px; height: 300px"
             :fit="fit"
             :src="imgUrl"
-            :previewSrcList="imgUrl"
+            @click="dialogVisible = true"
           >
           </el-image>
+          <el-dialog title="预览大图" :visible.sync="dialogVisible" width="30%">
+            <span>
+              <el-image :src="imgUrl" fit="contain"></el-image>
+            </span>
+            <span slot="footer" class="dialog-footer">
+              <el-button @click="dialogVisible = false">取 消</el-button>
+              <el-button type="primary" @click="dialogVisible = false">
+                确 定
+              </el-button>
+            </span>
+          </el-dialog>
         </el-col>
         <el-col :span="10">
           <p class="pName">{{ productInfo.skuName }}</p>
@@ -82,7 +93,8 @@ export default {
       comment: [],
       user: {},
       queryInfo: { id: "" },
-      token: ""
+      token: "",
+      dialogVisible: false
     };
   },
   created() {
