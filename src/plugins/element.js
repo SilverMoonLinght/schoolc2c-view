@@ -39,10 +39,15 @@ import {
     Image,
     Option,
     Upload,
-    Avatar
+    Avatar,
+    Tabs,
+    TabPane
 } from 'element-ui'
 
 
+
+Vue.use(TabPane)
+Vue.use(Tabs)
 Vue.use(Avatar)
 Vue.use(Upload)
 Vue.use(Option)

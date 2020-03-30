@@ -5,25 +5,18 @@
         <div class="title">
           <a href="/#/home"><p>校园二手交易</p></a>
         </div>
-        <div class="userBox" :style="userBox">
-          <div class="avatar">
-            <el-avatar size="medium" :src="circleUrl"></el-avatar>
-          </div>
-          <div class="dropDownUser">
-            <el-dropdown @command="userCenter">
-              <span class="el-dropdown-link">
-                个人中心<i class="el-icon-arrow-down el-icon--right"></i>
-              </span>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="c">个人信息</el-dropdown-item>
-                <el-dropdown-item command="d">修改密码</el-dropdown-item>
-                <el-dropdown-item command="e">注销</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-          </div>
+        <div class="menus">
+          <el-menu
+            :default-active="this.$route.path"
+            mode="horizontal"
+            :router="true"
+          >
+            <el-menu-item index="/productList">首页</el-menu-item>
+            <el-menu-item index="2">求购</el-menu-item>
+          </el-menu>
         </div>
-        <el-row :gutter="20" align="middle" :style="rowBox">
-          <el-col :span="2" :offset="17" class="dropDown" :style="dropDown">
+        <el-row :gutter="20" align="middle" :style="rowBox" class="row">
+          <el-col :span="2" :offset="19" class="dropDown" :style="dropDown">
             <el-dropdown @command="handleCommand">
               <span class="el-dropdown-link">
                 发布<i class="el-icon-arrow-down el-icon--right"></i>
@@ -41,6 +34,23 @@
             <router-link to="/userRegister"><p>注册</p></router-link>
           </el-col>
         </el-row>
+        <div class="userBox" :style="userBox">
+          <div class="avatar">
+            <el-avatar size="medium" :src="circleUrl"></el-avatar>
+          </div>
+          <div class="dropDownUser">
+            <el-dropdown @command="userCenter">
+              <span class="el-dropdown-link">
+                个人中心<i class="el-icon-arrow-down el-icon--right"></i>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="c">个人信息</el-dropdown-item>
+                <el-dropdown-item command="d">修改密码</el-dropdown-item>
+                <el-dropdown-item command="e">注销</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
+        </div>
       </div>
     </el-header>
     <el-main>
@@ -85,8 +95,8 @@ export default {
     getToken() {
       this.token = localStorage.getItem("token");
       if (this.token !== null) {
-        this.rowBox.width = "90%";
-        this.dropDown.margin = "20px 0 0 79%";
+        this.rowBox.width = "70%";
+        this.dropDown.margin = "20px 0 0 90%";
         this.userBox.display = null;
         this.userDo.display = "none";
       }
@@ -125,7 +135,7 @@ export default {
 }
 .header {
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  padding: 0 10% 0 15%;
+  padding: 0 10% 0 10%;
 }
 .title {
   line-height: 1;
@@ -162,5 +172,13 @@ a {
   margin-top: 10px;
   float: left;
   margin-right: 10px;
+}
+.menus {
+  width: 12%;
+  float: left;
+}
+.row {
+  width: 75%;
+  float: left;
 }
 </style>
