@@ -7,6 +7,7 @@
             style="width: 300px; height: 300px"
             :fit="fit"
             :src="imgUrl"
+            :previewSrcList="imgUrl"
           >
           </el-image>
         </el-col>

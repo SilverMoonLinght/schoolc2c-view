@@ -12,7 +12,7 @@
             :router="true"
           >
             <el-menu-item index="/productList">首页</el-menu-item>
-            <el-menu-item index="2">求购</el-menu-item>
+            <el-menu-item index="/productWantedList">求购</el-menu-item>
           </el-menu>
         </div>
         <el-row :gutter="20" align="middle" :style="rowBox" class="row">
@@ -116,6 +116,7 @@ export default {
           this.$Message.error("登录认证时间过期!");
           localStorage.removeItem("token");
           this.getToken();
+          this.reload();
         }
         if (res.icon !== null) {
           this.circleUrl = res.icon;

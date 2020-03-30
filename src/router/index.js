@@ -13,6 +13,7 @@ import releaseProductView from '../components/releaseProductView.vue'
 import productInfoView from '../components/productInfoView.vue'
 import userRegisterView from '../components/userRegisterView.vue'
 import productWantedView from '../components/productWantedView.vue'
+import productWantedListView from '../components/productWantedListView.vue'
 
 Vue.use(VueRouter)
 
@@ -74,6 +75,10 @@ const router = new VueRouter({
         {
           path: '/productWanted',
           component: productWantedView
+        },
+        {
+          path: '/productWantedList',
+          component: productWantedListView
         }
       ]
     }
