@@ -13,10 +13,12 @@
           >
             <el-menu-item index="/productList">首页</el-menu-item>
             <el-menu-item index="/productWantedList">求购</el-menu-item>
+            <el-menu-item index="2">拍卖</el-menu-item>
+            <el-menu-item index="3" style="color:blue">毕业季</el-menu-item>
           </el-menu>
         </div>
         <el-row :gutter="20" align="middle" :style="rowBox" class="row">
-          <el-col :span="2" :offset="19" class="dropDown" :style="dropDown">
+          <el-col :span="2" :offset="18" class="dropDown" :style="dropDown">
             <el-dropdown @command="handleCommand">
               <span class="el-dropdown-link">
                 发布<i class="el-icon-arrow-down el-icon--right"></i>
@@ -90,6 +92,9 @@ export default {
       if (command === "c") {
         this.$router.push("/userInfo");
       }
+      if (command === "d") {
+        this.$router.push("/updatePass");
+      }
       if (command == "e") {
         localStorage.removeItem("token");
         this.reload();
@@ -98,7 +103,7 @@ export default {
     getToken() {
       this.token = localStorage.getItem("token");
       if (this.token !== null) {
-        this.rowBox.width = "70%";
+        this.rowBox.width = "58%";
         this.dropDown.margin = "20px 0 0 90%";
         this.userBox.display = null;
         this.userDo.display = "none";
@@ -110,11 +115,12 @@ export default {
     },
     async getUserByToken() {
       if (this.token !== null) {
-        const {
-          data: res
-        } = await this.$http.get("http://127.0.0.1:8082/getUserByToken", {
-          headers: { token: this.token }
-        });
+        const { data: res } = await this.$http.get(
+          "http://127.0.0.1:8082/getUserByToken",
+          {
+            headers: { token: this.token }
+          }
+        );
 
         if (res === "fail") {
           this.$Message.error("登录认证时间过期!");
@@ -143,7 +149,6 @@ export default {
   padding: 0 10% 0 10%;
 }
 .title {
-  line-height: 1;
   font-family: "Hiragino Sans GB";
   font-size: 20px;
   width: 120px;
@@ -179,11 +184,11 @@ a {
   margin-right: 10px;
 }
 .menus {
-  width: 12%;
+  width: 24%;
   float: left;
 }
 .row {
-  width: 75%;
+  width: 66%;
   float: left;
 }
 </style>

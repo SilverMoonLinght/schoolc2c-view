@@ -1,7 +1,9 @@
 <template>
   <el-container>
     <el-header>
-      <h1 class="title">校园二手交易</h1>
+      <div class="title">
+        <router-link to="/home">校园二手交易</router-link>
+      </div>
     </el-header>
     <el-main>
       <router-view></router-view>
@@ -19,7 +21,11 @@ export default {};
 }
 .title {
   color: #fff;
-  line-height: 1;
-  font-family: "Hiragino Sans GB";
+  line-height: 2.5;
+  font-size: 1.5em;
+  margin-left: 10%;
+}
+a {
+  color: #fff;
 }
 </style>

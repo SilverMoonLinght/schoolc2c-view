@@ -35,6 +35,9 @@
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="submit" class="btn">确认</el-button>
+        </el-form-item>
       </el-form>
     </el-card>
   </div>
@@ -42,6 +45,7 @@
 
 <script>
 export default {
+  inject: ["reload"],
   data() {
     return {
       userInfo: {},
@@ -65,7 +69,22 @@ export default {
     },
     handleAvatarSuccess(res, file) {
       this.imageUrl = res;
+      this.userInfo.imgUrl = res;
       console.log(this.imageUrl);
+      console.log(this.userInfo.imgUrl);
+    },
+    async submit() {
+      const { data: res } = await this.$http.post(
+        "http://127.0.0.1:8082/editUserInfo",
+        this.userInfo
+      );
+      if (res === "success") {
+        this.$Message.success("修改成功!");
+      } else {
+        this.$Message.error("修改失败!");
+        this.getUserInfo();
+        this.reload();
+      }
     }
   }
 };
@@ -111,5 +130,10 @@ export default {
   height: 178px;
   display: block;
   object-fit: contain;
+}
+.btn {
+  position: relative;
+  left: 22%;
+  width: 30%;
 }
 </style>

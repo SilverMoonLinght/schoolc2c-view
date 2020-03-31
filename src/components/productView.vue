@@ -73,7 +73,7 @@
       <p>无商品</p>
     </div>
     <div class="productListBox" v-show="pShow">
-      <el-row :gutter="20">
+      <el-row :gutter="20" v-load="true">
         <el-col
           :span="6"
           style="margin-bottom:20px"
@@ -118,6 +118,7 @@
 
 <script>
 export default {
+  inject: ["reload"],
   data() {
     return {
       fit: "cover",
@@ -190,6 +191,8 @@ export default {
     clearAllSelect() {
       this.select2 = null;
       this.select3 = null;
+      this.getProductList();
+      this.reload();
     },
     clearSelect2() {
       this.select3 = null;
