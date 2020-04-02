@@ -1,8 +1,8 @@
 <template>
   <div class="userProductBox">
     <el-card :body-style="{ padding: '20px 0' }">
-      <el-tabs tab-position="left">
-        <el-tab-pane style="height:700px">
+      <el-tabs tab-position="left" @tab-click="clickTab" v-model="activeName">
+        <el-tab-pane style="height:700px" name="myProduct" lazy>
           <span slot="label"><i class="el-icon-s-goods"></i> 我的商品</span>
           <div class="productBox" v-for="item in usrProductList" :key="item.id">
             <div class="left">
@@ -42,9 +42,49 @@
             </div>
           </div>
         </el-tab-pane>
-        <el-tab-pane>
+        <el-tab-pane style="height:700px" name="myWanted" lazy>
           <span slot="label"><i class="el-icon-s-order"></i> 我的求购</span>
-          我的求购
+          <div
+            class="productBox"
+            v-for="item in productWantedList"
+            :key="item.id"
+          >
+            <div class="left">
+              <div class="imgBox">
+                <el-image
+                  style="width:90px;height:90px"
+                  :src="item.imgUrl"
+                  fit="contain"
+                ></el-image>
+              </div>
+              <div class="p-info">
+                <div class="pName">{{ item.productName }}</div>
+                <div class="pDesc">
+                  {{ item.description }}
+                </div>
+              </div>
+            </div>
+            <div class="right">
+              <!-- 修改按钮 -->
+              <el-tooltip effect="dark" content="修改" placement="top">
+                <el-button
+                  type="primary"
+                  icon="el-icon-edit"
+                  circle
+                  @click="editProductWanted(item)"
+                ></el-button>
+              </el-tooltip>
+              <!-- 删除按钮 -->
+              <el-tooltip effect="dark" content="删除" placement="top">
+                <el-button
+                  type="danger"
+                  icon="el-icon-delete"
+                  circle
+                  @click="removeProductWanted(item)"
+                ></el-button>
+              </el-tooltip>
+            </div>
+          </div>
         </el-tab-pane>
       </el-tabs>
     </el-card>
@@ -120,6 +160,78 @@
         <el-button type="primary" @click="editSubmit">确 定</el-button>
       </div>
     </el-dialog>
+    <el-dialog
+      title="修改商品信息"
+      :visible.sync="editWantedDialogVisible"
+      width="50%"
+      @closed="editWantedDialogClosed"
+    >
+      <el-form :model="editForm" label-width="80px" ref="editFormRef">
+        <el-form-item label="商品名称">
+          <el-input placeholder="请输入商品名称" v-model="editForm.productName">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="商品简介">
+          <el-input
+            type="textarea"
+            :rows="4"
+            placeholder="请输入商品简介"
+            maxlength="200"
+            show-word-limit
+            v-model="editForm.description"
+          >
+          </el-input>
+        </el-form-item>
+        <el-form-item label="价格">
+          <el-input
+            style="width:50%"
+            placeholder="请输入价格"
+            v-model="editForm.price"
+          >
+          </el-input>
+        </el-form-item>
+
+        <el-form-item label="微信">
+          <el-input
+            style="width:50%"
+            placeholder="微信，手机，QQ至少填一项"
+            v-model="editForm.wechat"
+          >
+          </el-input>
+        </el-form-item>
+        <el-form-item label="手机">
+          <el-input
+            style="width:50%"
+            placeholder="微信，手机，QQ至少填一项"
+            v-model="editForm.phone"
+          >
+          </el-input>
+        </el-form-item>
+        <el-form-item label="QQ">
+          <el-input
+            style="width:50%"
+            placeholder="微信，手机，QQ至少填一项"
+            v-model="editForm.qq"
+          >
+          </el-input>
+        </el-form-item>
+        <el-form-item label="图片">
+          <el-upload
+            class="img-uploader"
+            action="http://127.0.0.1:8084/imgUpload"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+          >
+            <img v-if="imageUrl" :src="imageUrl" class="image" />
+            <i v-else class="el-icon-plus img-uploader-icon"></i>
+          </el-upload>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="editWantedDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="editWantedSubmit">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -130,7 +242,10 @@ export default {
       usrProductList: [],
       editForm: {},
       editDialogVisible: false,
-      imageUrl: ""
+      imageUrl: "",
+      productWantedList: [],
+      activeName: "myProduct",
+      editWantedDialogVisible: false
     };
   },
   created() {
@@ -142,6 +257,12 @@ export default {
         "http://127.0.0.1:8084/getProductByUser"
       );
       this.usrProductList = res;
+    },
+    async getProductWantedByUser() {
+      const { data: res } = await this.$http.get(
+        "http://127.0.0.1:8084/getProductWantedByUser"
+      );
+      this.productWantedList = res;
     },
     editProductInfo(prodcutInfo) {
       this.editForm = prodcutInfo;
@@ -189,6 +310,53 @@ export default {
         this.$Message.error("修改失败!");
       }
       this.editDialogVisible = false;
+    },
+    clickTab(tab, event) {
+      if (tab.name === "myWanted") {
+        this.getProductWantedByUser();
+      }
+    },
+    editProductWanted(productWanted) {
+      this.editForm = productWanted;
+      this.imageUrl = productWanted.imgUrl;
+      this.editWantedDialogVisible = true;
+    },
+    editWantedDialogClosed() {
+      this.getProductWantedByUser();
+    },
+    async removeProductWanted(productWanted) {
+      const confirmResult = await this.$confirm("是否删除该商品?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).catch(err => err);
+
+      if (confirmResult != "confirm") {
+        return this.$Message.info("已取消删除");
+      }
+
+      const { data: resRemove } = await this.$http.post(
+        "http://127.0.0.1:8084/removeProductWanted",
+        productWanted
+      );
+      if (resRemove === "success") {
+        this.$Message.error("删除成功");
+      } else {
+        this.$Message.success("删除失败!");
+      }
+      this.getProductWantedByUser();
+    },
+    async editWantedSubmit() {
+      const { data: res } = await this.$http.post(
+        "http://127.0.0.1:8084/editProductWanted",
+        this.editForm
+      );
+      if (res === "success") {
+        this.$Message.success("修改成功!");
+      } else {
+        this.$Message.error("修改失败!");
+      }
+      this.editWantedDialogVisible = false;
     }
   }
 };
