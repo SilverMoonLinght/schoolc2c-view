@@ -16,6 +16,7 @@ import productWantedView from '../components/productWantedView.vue'
 import productWantedListView from '../components/productWantedListView.vue'
 import userInfoView from '../components/userInfoView.vue'
 import updatePassView from '../components/updatePassView.vue'
+import userProductView from '../components/userProductView.vue'
 
 Vue.use(VueRouter)
 
@@ -89,6 +90,10 @@ const router = new VueRouter({
         {
           path: '/updatePass',
           component: updatePassView
+        },
+        {
+          path: '/userProduct',
+          component: userProductView
         }
       ]
     }

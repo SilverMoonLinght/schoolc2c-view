@@ -73,7 +73,7 @@
       <p>无商品</p>
     </div>
     <div class="productListBox" v-show="pShow">
-      <el-row :gutter="20" v-load="true">
+      <el-row :gutter="20">
         <el-col
           :span="6"
           style="margin-bottom:20px"

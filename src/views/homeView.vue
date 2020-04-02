@@ -47,6 +47,8 @@
               </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item command="c">个人信息</el-dropdown-item>
+                <el-dropdown-item command="g">我的消息</el-dropdown-item>
+                <el-dropdown-item command="f">个人商品</el-dropdown-item>
                 <el-dropdown-item command="d">修改密码</el-dropdown-item>
                 <el-dropdown-item command="e">注销</el-dropdown-item>
               </el-dropdown-menu>
@@ -70,7 +72,7 @@ export default {
       circleUrl:
         "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
       rowBox: { width: null },
-      dropDown: { margin: null },
+      dropDown: { margin: null, padding: null },
       userBox: { display: "none" },
       userDo: { display: null }
     };
@@ -99,18 +101,23 @@ export default {
         localStorage.removeItem("token");
         this.reload();
       }
+      if (command === "f") {
+        this.$router.push("/userProduct");
+      }
     },
     getToken() {
       this.token = localStorage.getItem("token");
       if (this.token !== null) {
         this.rowBox.width = "58%";
         this.dropDown.margin = "20px 0 0 90%";
+        this.dropDown.padding = "0";
         this.userBox.display = null;
         this.userDo.display = "none";
       }
       if (this.token === null) {
         this.rowBox.width = null;
         this.dropDown.margin = null;
+        this.dropDown.padding = null;
       }
     },
     async getUserByToken() {
