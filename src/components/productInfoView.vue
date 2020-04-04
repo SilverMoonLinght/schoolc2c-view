@@ -61,16 +61,18 @@
         >
       </div>
       <div class="comment">
-        <div class="comment-item">
+        <div class="comment-item" v-for="item in comment" :key="item.id">
           <div class="comment-item-left">
-            <el-avatar icon="el-icon-user-solid"></el-avatar>
+            <el-avatar :src="item.icon"></el-avatar>
             <div class="user">
-              <div>{{ user.username }}</div>
-              <div style="color:#808695">{{ message.date }}</div>
+              <div>{{ item.username }}</div>
+              <div style="color:#808695;font-size:10px;margin-top:10px">
+                {{ item.datetime }}
+              </div>
             </div>
           </div>
           <div class="comment-item-right">
-            <p>{{ comment.text }}</p>
+            <p>{{ item.text }}</p>
           </div>
         </div>
       </div>
@@ -86,7 +88,7 @@ export default {
       imgUrl: "",
       productInfo: {},
       message: {
-        uid: "",
+        pid: "",
         text: "",
         date: ""
       },
@@ -100,6 +102,7 @@ export default {
   created() {
     this.getToken();
     this.getProductInfo();
+    this.getMessage();
   },
   methods: {
     getToken() {
@@ -116,13 +119,33 @@ export default {
       this.productInfo = res;
       this.imgUrl = this.productInfo.imgUrl;
     },
-    textCommit() {
+    async textCommit() {
       if (this.token === null) {
         this.$Message.success("请登录后留言");
         return this.$router.push(
           "/userLogin?rUrl=" + this.$route.path + "?id=" + this.queryInfo.id
         );
       }
+      this.message.pid = this.queryInfo.id;
+      const { data: res } = await this.$http.post(
+        "http://127.0.0.1:8084/releaseMessage",
+        this.message
+      );
+      if (res === "success") {
+        return this.$Message.success("发送成功!");
+      } else {
+        return this.$Message.error("发送失败!");
+      }
+    },
+    async getMessage() {
+      const { data: res } = await this.$http.get(
+        "http://127.0.0.1:8084/getMessageByPid",
+        {
+          params: this.queryInfo
+        }
+      );
+      this.comment = res;
+      console.log(this.comment);
     }
   }
 };
