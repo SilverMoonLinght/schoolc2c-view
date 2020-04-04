@@ -14,7 +14,9 @@
             <el-menu-item index="/productList">首页</el-menu-item>
             <el-menu-item index="/productWantedList">求购</el-menu-item>
             <el-menu-item index="2">拍卖</el-menu-item>
-            <el-menu-item index="3" style="color:blue">毕业季</el-menu-item>
+            <el-menu-item index="/biyeProducts" style="color:blue"
+              >毕业季</el-menu-item
+            >
           </el-menu>
         </div>
         <el-row :gutter="20" align="middle" :style="rowBox" class="row">

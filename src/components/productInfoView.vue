@@ -65,7 +65,7 @@
           <div class="comment-item-left">
             <el-avatar :src="item.icon"></el-avatar>
             <div class="user">
-              <div>{{ item.username }}</div>
+              <div>{{ item.nickname }}</div>
               <div style="color:#808695;font-size:10px;margin-top:10px">
                 {{ item.datetime }}
               </div>
@@ -82,6 +82,7 @@
 
 <script>
 export default {
+  inject: ["reload"],
   data() {
     return {
       fit: "contain",
@@ -132,6 +133,7 @@ export default {
         this.message
       );
       if (res === "success") {
+        this.reload();
         return this.$Message.success("发送成功!");
       } else {
         return this.$Message.error("发送失败!");
@@ -145,7 +147,6 @@ export default {
         }
       );
       this.comment = res;
-      console.log(this.comment);
     }
   }
 };
