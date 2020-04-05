@@ -25,6 +25,10 @@ Vue.use(VueRouter)
 const router = new VueRouter({
 
   routes: [{
+      path: '/',
+      redirect: '/home'
+    },
+    {
       path: '/adminLoginView',
       component: adminLoginView
     },

@@ -50,19 +50,7 @@
                   @click="addBoothProductVisible = true"
                 ></el-button>
               </el-tooltip>
-              <el-tooltip
-                effect="dark"
-                content="修改商品"
-                placement="top"
-                v-if="boothId !== null"
-              >
-                <el-button
-                  type="info"
-                  class="btn"
-                  icon="el-icon-edit"
-                  v-if="boothId !== null"
-                ></el-button>
-              </el-tooltip>
+
               <el-tooltip
                 effect="dark"
                 content="清空商品"
@@ -89,6 +77,7 @@
                 class="product-item"
                 v-for="item in boothProduct"
                 :key="item.id"
+                @click="editProductDialog(item)"
               >
                 <div class="product-item-left">
                   <div class="product-item-name">{{ item.pName }}</div>
@@ -162,7 +151,7 @@
               </span>
             </div>
           </el-upload>
-          <el-dialog :visible.sync="dialogVisible">
+          <el-dialog :visible.sync="dialogVisible" append-to-body>
             <img width="100%" :src="dialogImageUrl" alt="" />
           </el-dialog>
         </el-form-item>
@@ -170,6 +159,49 @@
       <div slot="footer" class="dialog-footer">
         <el-button @click="addBoothProductVisible = false">取 消</el-button>
         <el-button type="primary" @click="addBoothProduct">确 定</el-button>
+      </div>
+    </el-dialog>
+    <!-- 修改摊位商品对话框 -->
+    <el-dialog
+      title="修改商品"
+      :visible.sync="editBoothProductVisible"
+      width="30%"
+      @closed="editBoothProductClosed"
+    >
+      <el-form :model="editBoothProductForm" label-width="80px">
+        <el-form-item label="商品名称">
+          <el-input v-model="editBoothProductForm.pName"></el-input>
+        </el-form-item>
+        <el-form-item label="商品介绍" prop="pDesc">
+          <el-input
+            type="textarea"
+            v-model="editBoothProductForm.pDesc"
+            maxlength="200"
+            show-word-limit
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="价格" prop="price">
+          <el-input v-model="editBoothProductForm.price"></el-input>
+        </el-form-item>
+        <el-form-item label="图片" prop="imgUrl">
+          <el-upload
+            class="img-uploader"
+            action="http://127.0.0.1:8084/imgUpload"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+          >
+            <img v-if="imageUrl" :src="imageUrl" class="image" />
+            <i v-else class="el-icon-plus img-uploader-icon"></i>
+          </el-upload>
+          <el-dialog :visible.sync="dialogVisible" append-to-body>
+            <img width="100%" :src="dialogImageUrl" alt="" />
+          </el-dialog>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="editBoothProductVisible = false">取 消</el-button>
+        <el-button type="danger" @click="deleteBoothProduct">删 除</el-button>
+        <el-button type="primary" @click="editBoothProduct">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -185,6 +217,7 @@ export default {
       userInfo: {},
       boothId: null,
       boothProduct: null,
+      // 添加商品
       addBoothProductVisible: false,
       dialogVisible: false,
       disabled: false,
@@ -195,7 +228,11 @@ export default {
         price: "",
         bid: "",
         imgUrl: ""
-      }
+      },
+      //修改商品
+      editBoothProductVisible: false,
+      editBoothProductForm: {},
+      imageUrl: ""
     };
   },
   created() {
@@ -242,6 +279,7 @@ export default {
         this.boothProduct = res;
       }
     },
+    // 添加摊位商品
     async addBoothProduct() {
       this.addBoothProductForm.bid = this.boothId;
       const { data: res } = await this.$http.post(
@@ -268,6 +306,47 @@ export default {
     },
     handleRemove() {
       this.$refs.uploadRef.clearFiles();
+    },
+    // 修改商品
+    editProductDialog(productInfo) {
+      this.editBoothProductForm = productInfo;
+      this.imageUrl = productInfo.imgUrl;
+      this.editBoothProductVisible = true;
+    },
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = res;
+      this.editBoothProductForm.imgUrl = res;
+    },
+    async editBoothProduct() {
+      const { data: res } = await this.$http.post(
+        "http://127.0.0.1:8084/editBoothProduct",
+        this.editBoothProductForm
+      );
+      if (res === "success") {
+        this.$Message.success("修改成功!");
+        this.getBoothProductList();
+      } else {
+        return this.$Message.error("修改失败!");
+      }
+
+      this.editBoothProductVisible = false;
+    },
+    editBoothProductClosed() {
+      this.getBoothProductList();
+    },
+    // 删除商品
+    async deleteBoothProduct() {
+      const { data: res } = await this.$http.post(
+        "http://127.0.0.1:8084/deleteBoothProduct",
+        this.editBoothProductForm
+      );
+      if (res === "success") {
+        this.$Message.success("删除成功");
+      } else {
+        return this.$Message.error("删除失败");
+      }
+      this.getBoothProductList();
+      this.editBoothProductVisible = false;
     }
   }
 };
@@ -341,5 +420,35 @@ export default {
 }
 .product-item-price {
   margin: 10px 10px 0 0;
+}
+.el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.img-uploader {
+  width: 178px;
+  height: 178px;
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.image {
+  width: 178px;
+  height: 178px;
+  display: block;
+  object-fit: contain;
+}
+.img-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
 }
 </style>
