@@ -92,7 +92,67 @@
         </div>
       </el-card>
     </div>
-    <div class="right"></div>
+    <div class="right">
+      <el-row :gutter="100">
+        <el-col
+          :span="10"
+          style="margin-bottom:20px"
+          v-for="booth in boothList"
+          :key="booth.id"
+        >
+          <el-card :body-style="{ padding: '0px' }">
+            <div class="left-header">
+              <div>
+                <el-avatar :size="size" :src="booth.icon"></el-avatar>
+              </div>
+              <div class="user-info">
+                <div>{{ booth.nickname }}</div>
+                <div class="user-personal">
+                  {{ booth.personalizedSignature }}
+                </div>
+              </div>
+              <div class="user-info">
+                <div style="margin-left:30px">手机：{{ booth.phone }}</div>
+                <div style="margin-left:30px">摊位：{{ booth.id }}号</div>
+              </div>
+            </div>
+            <div class="content">
+              <div class="content-product" v-if="boothId !== null">
+                <div class="product-box booth-product-box">
+                  <div
+                    class="product-item"
+                    v-for="boothProductList in booth.boothProductList"
+                    :key="boothProductList.id"
+                    @click="showProductDialog(boothProductList)"
+                  >
+                    <div style="display:flex;width:80%">
+                      <el-image
+                        style="width:50px;height:50px"
+                        :src="boothProductList.imgUrl"
+                        fit="contain"
+                      ></el-image>
+                      <div style="width:50%">
+                        <div class="product-item-name">
+                          {{ boothProductList.pName }}
+                        </div>
+                        <div class="product-item-desc">
+                          {{ boothProductList.pDesc }}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="product-item-right">
+                      <div class="product-item-price">
+                        ¥{{ boothProductList.price }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </el-card>
+        </el-col>
+      </el-row>
+    </div>
     <!-- 添加摊位商品对话框 -->
     <el-dialog
       title="添加商品"
@@ -204,6 +264,33 @@
         <el-button type="primary" @click="editBoothProduct">确 定</el-button>
       </div>
     </el-dialog>
+    <!-- 显示商品详情对话框 -->
+    <el-dialog
+      :visible.sync="showBoothProductVisible"
+      width="50%"
+      @closed="showBoothProductClosed"
+    >
+      <el-row :gutter="20">
+        <el-col :offset="2" :span="10">
+          <el-image
+            style="width: 300px; height: 300px"
+            fit="fit"
+            :src="showImgUrl"
+          >
+          </el-image>
+        </el-col>
+        <el-col :span="10" offset="2">
+          <p class="pName">{{ showBoothProduct.pName }}</p>
+          <p style="font-size:14px;color:#616776">
+            {{ showBoothProduct.pDesc }}
+          </p>
+          <div class="info-item">
+            <i class="el-icon-coin i-title"></i>
+            <span style="margin-left:10px">¥{{ showBoothProduct.price }}</span>
+          </div>
+        </el-col>
+      </el-row>
+    </el-dialog>
   </div>
 </template>
 
@@ -217,6 +304,7 @@ export default {
       userInfo: {},
       boothId: null,
       boothProduct: null,
+      boothList: [],
       // 添加商品
       addBoothProductVisible: false,
       dialogVisible: false,
@@ -232,7 +320,11 @@ export default {
       //修改商品
       editBoothProductVisible: false,
       editBoothProductForm: {},
-      imageUrl: ""
+      imageUrl: "",
+      // 显示商品详情
+      showBoothProductVisible: false,
+      showBoothProduct: {},
+      showImgUrl: ""
     };
   },
   created() {
@@ -254,6 +346,7 @@ export default {
       if (res) {
         this.boothId = res.id;
         this.getBoothProductList();
+        this.getBoothList();
       }
     },
     async createBooth() {
@@ -278,6 +371,15 @@ export default {
       if (res) {
         this.boothProduct = res;
       }
+    },
+    async getBoothList() {
+      const { data: res } = await this.$http.get(
+        "http://127.0.0.1:8084/getBoothList",
+        {
+          params: { bid: this.boothId }
+        }
+      );
+      this.boothList = res;
     },
     // 添加摊位商品
     async addBoothProduct() {
@@ -336,6 +438,17 @@ export default {
     },
     // 删除商品
     async deleteBoothProduct() {
+      //弹框
+      const confirmResult = await this.$confirm("是否删除此商品！", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).catch(err => err);
+
+      if (confirmResult != "confirm") {
+        return this.$Message.info("已取消删除");
+      }
+
       const { data: res } = await this.$http.post(
         "http://127.0.0.1:8084/deleteBoothProduct",
         this.editBoothProductForm
@@ -347,7 +460,14 @@ export default {
       }
       this.getBoothProductList();
       this.editBoothProductVisible = false;
-    }
+    },
+
+    showProductDialog(productInfo) {
+      this.showBoothProduct = productInfo;
+      this.showImgUrl = productInfo.imgUrl;
+      this.showBoothProductVisible = true;
+    },
+    showBoothProductClosed() {}
   }
 };
 </script>
@@ -359,7 +479,7 @@ export default {
   display: flex;
 }
 .left {
-  width: 25%;
+  width: 22%;
   height: 400px;
 }
 .right {
@@ -450,5 +570,9 @@ export default {
   height: 178px;
   line-height: 178px;
   text-align: center;
+}
+.booth-product-box {
+  height: 200px;
+  overflow-y: scroll;
 }
 </style>

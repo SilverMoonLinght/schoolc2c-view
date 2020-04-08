@@ -69,9 +69,7 @@ export default {
     },
     handleAvatarSuccess(res, file) {
       this.imageUrl = res;
-      this.userInfo.imgUrl = res;
-      console.log(this.imageUrl);
-      console.log(this.userInfo.imgUrl);
+      this.userInfo.icon = res;
     },
     async submit() {
       const { data: res } = await this.$http.post(

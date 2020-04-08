@@ -102,6 +102,7 @@ export default {
       if (command == "e") {
         localStorage.removeItem("token");
         this.reload();
+        this.$router.push("/home");
       }
       if (command === "f") {
         this.$router.push("/userProduct");
