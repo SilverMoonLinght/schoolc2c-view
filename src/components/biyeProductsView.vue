@@ -1,6 +1,6 @@
 <template>
   <div class="contain">
-    <div class="left">
+    <div class="left" v-if="boothId !== null">
       <el-card :body-style="{ padding: '0px' }">
         <div class="left-header">
           <div>
@@ -117,7 +117,7 @@
               </div>
             </div>
             <div class="content">
-              <div class="content-product" v-if="boothId !== null">
+              <div class="content-product">
                 <div class="product-box booth-product-box">
                   <div
                     class="product-item"
@@ -299,6 +299,7 @@ export default {
   inject: ["reload"],
   data() {
     return {
+      token: "",
       size: "large",
       circleUrl: "",
       userInfo: {},
@@ -333,21 +334,27 @@ export default {
   },
   methods: {
     async getUserInfoByToken() {
-      const { data: res } = await this.$http.get(
-        "http://127.0.0.1:8082/getUserByToken"
-      );
-      this.userInfo = res;
-      this.circleUrl = res.icon;
+      this.token = localStorage.getItem("token");
+
+      if (this.token !== null && this.token !== "") {
+        const { data: res } = await this.$http.get(
+          "http://127.0.0.1:8082/getUserByToken"
+        );
+        this.userInfo = res;
+        this.circleUrl = res.icon;
+      }
     },
     async getBoothInfo() {
-      const { data: res } = await this.$http.get(
-        "http://127.0.0.1:8084/getBoothInfo"
-      );
-      if (res) {
-        this.boothId = res.id;
-        this.getBoothProductList();
-        this.getBoothList();
+      if (this.token !== null && this.token !== "") {
+        const { data: res } = await this.$http.get(
+          "http://127.0.0.1:8084/getBoothInfo"
+        );
+        if (res) {
+          this.boothId = res.id;
+          this.getBoothProductList();
+        }
       }
+      this.getBoothList();
     },
     async createBooth() {
       const { data: res } = await this.$http.get(
@@ -373,7 +380,7 @@ export default {
       }
     },
     async getBoothList() {
-      const { data: res } = await this.$http.get(
+      const { data: res, status: status } = await this.$http.get(
         "http://127.0.0.1:8084/getBoothList",
         {
           params: { bid: this.boothId }
@@ -381,6 +388,7 @@ export default {
       );
       this.boothList = res;
     },
+
     // 添加摊位商品
     async addBoothProduct() {
       this.addBoothProductForm.bid = this.boothId;
@@ -483,7 +491,6 @@ export default {
   height: 400px;
 }
 .right {
-  width: 70%;
   height: 700px;
   margin-left: 50px;
 }
