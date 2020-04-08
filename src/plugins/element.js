@@ -41,11 +41,13 @@ import {
     Upload,
     Avatar,
     Tabs,
-    TabPane
+    TabPane,
+    DatePicker
 } from 'element-ui'
 
 
 
+Vue.use(DatePicker)
 Vue.use(TabPane)
 Vue.use(Tabs)
 Vue.use(Avatar)

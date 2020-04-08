@@ -13,7 +13,7 @@
           >
             <el-menu-item index="/productList">首页</el-menu-item>
             <el-menu-item index="/productWantedList">求购</el-menu-item>
-            <el-menu-item index="2">拍卖</el-menu-item>
+            <el-menu-item index="/auction">拍卖</el-menu-item>
             <el-menu-item index="/biyeProducts" style="color:blue"
               >毕业季</el-menu-item
             >
@@ -28,6 +28,7 @@
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item command="a">发布商品</el-dropdown-item>
                 <el-dropdown-item command="b">发布求购</el-dropdown-item>
+                <el-dropdown-item command="h">发布拍卖</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </el-col>
@@ -90,6 +91,9 @@ export default {
       }
       if (command === "b") {
         this.$router.push("/productWanted");
+      }
+      if (command === "h") {
+        this.$router.push("/releaseAuction");
       }
     },
     userCenter(command) {
