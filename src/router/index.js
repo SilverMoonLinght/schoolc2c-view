@@ -19,7 +19,8 @@ import updatePassView from '../components/updatePassView.vue'
 import userProductView from '../components/userProductView.vue'
 import biyeProductsView from '../components/biyeProductsView.vue'
 import releaseAuctionView from '../components/releaseAuctionView.vue'
-import auctionView from '../components/auctionView.vue'
+import auctionView from '../components/auction/auctionView.vue'
+import auctionInfoView from '../components/auction/auctionInfoView.vue'
 
 Vue.use(VueRouter)
 
@@ -113,6 +114,10 @@ const router = new VueRouter({
         {
           path: '/auction',
           component: auctionView
+        },
+        {
+          path: '/auctionInfo',
+          component: auctionInfoView
         }
       ]
     }

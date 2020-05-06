@@ -62,8 +62,8 @@ export default {
           this.adminLoginData
         );
         if (res) {
-          return this.$Message.success("登陆成功!");
-          this.$router.push("/adminHomeView");
+          this.$Message.success("登陆成功!");
+          this.$router.push("/welcome");
         } else return this.$Message.error("登录失败!");
       });
     }
