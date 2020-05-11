@@ -66,7 +66,7 @@
       <div>当前价格：￥{{ maxPrice }}</div>
       <div class="auction-record-item">
         拍卖记录：<el-table :data="tableData" style="width: 40%" border>
-          <el-table-column prop="username" label="用户名" width="150">
+          <el-table-column prop="nickname" label="昵称" width="150">
           </el-table-column>
           <el-table-column prop="price" label="价格" width="80">
           </el-table-column>
@@ -142,7 +142,6 @@ export default {
           params: { aid: this.$route.query.id }
         }
       );
-      console.log(res);
       this.tableData = res;
     },
     async getMaxPrice() {

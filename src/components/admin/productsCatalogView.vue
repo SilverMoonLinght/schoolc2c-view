@@ -35,10 +35,10 @@
       >
         <template slot="order" slot-scope="scope">
           <el-tag size="mini" v-if="scope.row.level == 1">一级</el-tag>
-          <el-tag type="success" size="mini" v-else-if="scope.row.level == 2"
+          <el-tag type="success" size="mini" v-if="scope.row.level == 2"
             >二级</el-tag
           >
-          <el-tag type="info" size="mini" v-else="scope.row.level == 3"
+          <el-tag type="info" size="mini" v-if="scope.row.level == 3"
             >三级</el-tag
           >
         </template>

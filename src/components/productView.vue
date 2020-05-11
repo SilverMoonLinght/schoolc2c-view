@@ -8,6 +8,43 @@
         </el-carousel-item>
       </el-carousel>
     </el-card>
+    <!-- 热门商品 -->
+    <el-card class="hot-product-title">
+      <div>热门商品</div>
+    </el-card>
+    <div class="hot-product">
+      <el-row :gutter="20">
+        <el-col
+          :span="4"
+          style="margin-bottom:20px"
+          v-for="item in hotProduct"
+          :key="item.id"
+        >
+          <router-link :to="{ name: 'productInfo', query: { id: item.id } }">
+            <el-card :body-style="{ padding: '10px' }">
+              <el-image
+                style="width:200px;height:200px"
+                :fit="fit"
+                :src="item.imgUrl"
+              >
+                <div slot="error">
+                  <i class="el-icon-picture-outline"></i>
+                </div>
+              </el-image>
+              <div class="pDesc">
+                <p class="skuName">
+                  {{ item.skuName }}
+                </p>
+                <p class="skuDesc">
+                  {{ item.skuDesc }}
+                </p>
+              </div>
+            </el-card>
+          </router-link>
+        </el-col>
+      </el-row>
+    </div>
+
     <!-- 分类选择器 -->
     <el-row :gutter="20" class="selectGroup">
       <el-col :span="12" :offset="6">
@@ -153,12 +190,14 @@ export default {
         pageNum: 1,
         pageSize: 16
       },
-      total: 0
+      total: 0,
+      hotProduct: []
     };
   },
   created() {
     this.getCatalog1();
     this.getProductList();
+    this.getHotProduct();
   },
   methods: {
     // 获取一级分类
@@ -233,6 +272,14 @@ export default {
     handleCurrentChange(newNum) {
       this.queryInfo.pageNum = newNum;
       this.getProductList();
+    },
+    //获取热门商品
+    async getHotProduct() {
+      const { data: res } = await this.$http.get(
+        "http://127.0.0.1:8084/getHotProduct"
+      );
+      console.log(res);
+      this.hotProduct = res;
     }
   }
 };
@@ -290,5 +337,16 @@ a {
 .pagination {
   position: relative;
   left: 30%;
+}
+.hot-product-title {
+  margin-top: 10px;
+  width: 1078px;
+  position: relative;
+  left: 200px;
+}
+.hot-product {
+  width: 1300px;
+  position: relative;
+  left: 200px;
 }
 </style>

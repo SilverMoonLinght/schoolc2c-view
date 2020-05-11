@@ -36,6 +36,15 @@
               <el-menu-item index="/productsCatalog">商品分类</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
+          <el-submenu index="3">
+            <template slot="title">
+              <i class="el-icon-menu"></i>
+              <span>摊位管理</span>
+            </template>
+            <el-menu-item-group>
+              <el-menu-item index="/boothList">摊位列表</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
         </el-menu>
       </el-aside>
       <!-- 主体 -->
