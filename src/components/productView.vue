@@ -45,12 +45,26 @@
       </el-row>
     </div>
 
-    <!-- 分类选择器 -->
+    <!-- 分类选择器和搜索框 -->
     <el-row :gutter="20" class="selectGroup">
-      <el-col :span="12" :offset="6">
+      <el-col :span="18" :offset="3">
         <el-card>
           <el-row :gutter="10">
             <el-col :span="8">
+              <el-input
+                type="text"
+                v-model="queryInfo.searchInfo"
+                @change="searchChange"
+              >
+                <el-button
+                  slot="append"
+                  icon="el-icon-search"
+                  @click="searchBtn"
+                >
+                </el-button>
+              </el-input>
+            </el-col>
+            <el-col :span="5">
               <el-select
                 v-model="select1"
                 clearable
@@ -67,7 +81,7 @@
                 </el-option>
               </el-select>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="5">
               <el-select
                 v-model="select2"
                 clearable
@@ -84,7 +98,7 @@
                 </el-option>
               </el-select>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="5">
               <el-select
                 v-model="select3"
                 clearable
@@ -188,7 +202,8 @@ export default {
       queryInfo: {
         catalog3Id: null,
         pageNum: 1,
-        pageSize: 16
+        pageSize: 16,
+        searchInfo: null
       },
       total: 0,
       hotProduct: []
@@ -271,15 +286,44 @@ export default {
     // 页码值改变
     handleCurrentChange(newNum) {
       this.queryInfo.pageNum = newNum;
-      this.getProductList();
+      if (
+        this.queryInfo.searchInfo === null ||
+        this.queryInfo.searchInfo === ""
+      ) {
+        this.getProductList();
+      }
+      if (
+        this.queryInfo.searchInfo !== null ||
+        this.queryInfo.searchInfo !== ""
+      ) {
+        this.searchBtn();
+      }
     },
     //获取热门商品
     async getHotProduct() {
       const { data: res } = await this.$http.get(
         "http://127.0.0.1:8084/getHotProduct"
       );
-      console.log(res);
       this.hotProduct = res;
+    },
+    //模糊查询
+    async searchBtn() {
+      const { data: res } = await this.$http.get(
+        "http://127.0.0.1:8084/searchProduct",
+        {
+          params: this.queryInfo
+        }
+      );
+      this.productList = res.productSearchInfos;
+      this.total = res.totalPageNum;
+    },
+    searchChange() {
+      if (
+        this.queryInfo.searchInfo === null ||
+        this.queryInfo.searchInfo === ""
+      ) {
+        this.getProductList();
+      }
     }
   }
 };

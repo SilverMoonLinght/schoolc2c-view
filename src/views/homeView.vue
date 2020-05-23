@@ -3,7 +3,7 @@
     <el-header>
       <div class="header">
         <div class="title">
-          <a href="/#/home"><p>校园二手交易</p></a>
+          <a href="/#/productList"><p>校园二手交易</p></a>
         </div>
         <div class="menus">
           <el-menu
