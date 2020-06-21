@@ -1,0 +1,72 @@
+Date : 2020-06-17 11:18:15
+Directory : f:\schoolc2cView\schoolc2c-view
+Total : 33 files,  15917 codes, 66 comments, 125 blanks, all 16108 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| JSON       |          3 |     11,019 |          0 |          3 |     11,022 |
+| Vue        |         23 |      4,605 |         65 |         98 |      4,768 |
+| JavaScript |          4 |        246 |          0 |         16 |        262 |
+| HTML       |          1 |         16 |          1 |          1 |         18 |
+| CSS        |          1 |         16 |          0 |          2 |         18 |
+| Markdown   |          1 |         15 |          0 |          5 |         20 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                         | files      | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                            |         33 |     15,917 |         66 |        125 |     16,108 |
+| public                                                                       |          1 |         16 |          1 |          1 |         18 |
+| src                                                                          |         27 |      4,853 |         65 |        116 |      5,034 |
+| src\assets                                                                   |          1 |         16 |          0 |          2 |         18 |
+| src\assets\css                                                               |          1 |         16 |          0 |          2 |         18 |
+| src\components                                                               |         18 |      4,171 |         65 |         82 |      4,318 |
+| src\components\admin                                                         |          3 |        675 |         35 |         21 |        731 |
+| src\components\auction                                                       |          2 |        421 |          5 |          4 |        430 |
+| src\plugins                                                                  |          1 |         89 |          0 |          3 |         92 |
+| src\router                                                                   |          1 |        127 |          0 |          5 |        132 |
+| src\views                                                                    |          4 |        404 |          0 |         13 |        417 |
++------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                     | language   | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| f:\schoolc2cView\schoolc2c-view\.prettierrc.json                             | JSON       |          0 |          0 |          1 |          1 |
+| f:\schoolc2cView\schoolc2c-view\README.md                                    | Markdown   |         15 |          0 |          5 |         20 |
+| f:\schoolc2cView\schoolc2c-view\babel.config.js                              | JavaScript |         14 |          0 |          0 |         14 |
+| f:\schoolc2cView\schoolc2c-view\package-lock.json                            | JSON       |     10,992 |          0 |          1 |     10,993 |
+| f:\schoolc2cView\schoolc2c-view\package.json                                 | JSON       |         27 |          0 |          1 |         28 |
+| f:\schoolc2cView\schoolc2c-view\public\index.html                            | HTML       |         16 |          1 |          1 |         18 |
+| f:\schoolc2cView\schoolc2c-view\src\App.vue                                  | Vue        |         30 |          0 |          3 |         33 |
+| f:\schoolc2cView\schoolc2c-view\src\assets\css\global.css                    | CSS        |         16 |          0 |          2 |         18 |
+| f:\schoolc2cView\schoolc2c-view\src\components\admin\boothListView.vue       | Vue        |         84 |          1 |          5 |         90 |
+| f:\schoolc2cView\schoolc2c-view\src\components\admin\productsCatalogView.vue | Vue        |        255 |         16 |          7 |        278 |
+| f:\schoolc2cView\schoolc2c-view\src\components\admin\userListView.vue        | Vue        |        336 |         18 |          9 |        363 |
+| f:\schoolc2cView\schoolc2c-view\src\components\auction\auctionInfoView.vue   | Vue        |        173 |          0 |          2 |        175 |
+| f:\schoolc2cView\schoolc2c-view\src\components\auction\auctionView.vue       | Vue        |        248 |          5 |          2 |        255 |
+| f:\schoolc2cView\schoolc2c-view\src\components\biyeProductsView.vue          | Vue        |        591 |          7 |         13 |        611 |
+| f:\schoolc2cView\schoolc2c-view\src\components\productInfoView.vue           | Vue        |        208 |          0 |          2 |        210 |
+| f:\schoolc2cView\schoolc2c-view\src\components\productView.vue               | Vue        |        386 |          7 |          3 |        396 |
+| f:\schoolc2cView\schoolc2c-view\src\components\productWantedListView.vue     | Vue        |        146 |          0 |          5 |        151 |
+| f:\schoolc2cView\schoolc2c-view\src\components\productWantedView.vue         | Vue        |        157 |          1 |          2 |        160 |
+| f:\schoolc2cView\schoolc2c-view\src\components\releaseAuctionView.vue        | Vue        |        219 |          4 |          4 |        227 |
+| f:\schoolc2cView\schoolc2c-view\src\components\releaseProductView.vue        | Vue        |        207 |          4 |          3 |        214 |
+| f:\schoolc2cView\schoolc2c-view\src\components\updatePassView.vue            | Vue        |        111 |          0 |          4 |        115 |
+| f:\schoolc2cView\schoolc2c-view\src\components\userInfoView.vue              | Vue        |        138 |          0 |          2 |        140 |
+| f:\schoolc2cView\schoolc2c-view\src\components\userLogin.vue                 | Vue        |        101 |          0 |          2 |        103 |
+| f:\schoolc2cView\schoolc2c-view\src\components\userProductView.vue           | Vue        |        624 |          2 |         13 |        639 |
+| f:\schoolc2cView\schoolc2c-view\src\components\userRegisterView.vue          | Vue        |        177 |          0 |          2 |        179 |
+| f:\schoolc2cView\schoolc2c-view\src\components\welcome.vue                   | Vue        |         10 |          0 |          2 |         12 |
+| f:\schoolc2cView\schoolc2c-view\src\main.js                                  | JavaScript |         16 |          0 |          8 |         24 |
+| f:\schoolc2cView\schoolc2c-view\src\plugins\element.js                       | JavaScript |         89 |          0 |          3 |         92 |
+| f:\schoolc2cView\schoolc2c-view\src\router\index.js                          | JavaScript |        127 |          0 |          5 |        132 |
+| f:\schoolc2cView\schoolc2c-view\src\views\adminHomeView.vue                  | Vue        |         74 |          0 |          4 |         78 |
+| f:\schoolc2cView\schoolc2c-view\src\views\adminLoginView.vue                 | Vue        |         98 |          0 |          2 |        100 |
+| f:\schoolc2cView\schoolc2c-view\src\views\homeView.vue                       | Vue        |        203 |          0 |          5 |        208 |
+| f:\schoolc2cView\schoolc2c-view\src\views\userLoginRegisterView.vue          | Vue        |         29 |          0 |          2 |         31 |
+| Total                                                                        |            |     15,917 |         66 |        125 |     16,108 |
++------------------------------------------------------------------------------+------------+------------+------------+------------+------------+

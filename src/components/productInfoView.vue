@@ -43,6 +43,7 @@
                 微信：{{ productInfo.wechat }}
               </p>
               <p v-if="productInfo.qq != null">QQ：{{ productInfo.qq }}</p>
+              <p>学校：{{ productInfo.school }}</p>
             </div>
           </div>
         </el-col>
@@ -104,6 +105,7 @@ export default {
     this.getToken();
     this.getProductInfo();
     this.getMessage();
+    this.getUserByToken();
   },
   methods: {
     getToken() {
@@ -147,6 +149,12 @@ export default {
         }
       );
       this.comment = res;
+    },
+    async getUserByToken() {
+      const { data: res } = await this.$http.get(
+        "http://127.0.0.1:8082/getUserByToken"
+      );
+      this.user = res;
     }
   }
 };

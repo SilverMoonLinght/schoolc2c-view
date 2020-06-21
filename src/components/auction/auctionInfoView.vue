@@ -43,6 +43,7 @@
                 微信：{{ auctionInfo.wechat }}
               </p>
               <p v-if="auctionInfo.qq != null">QQ：{{ auctionInfo.qq }}</p>
+              <p>学校：{{ auctionInfo.school }}</p>
             </div>
           </div>
           <div>
@@ -142,6 +143,7 @@ export default {
           params: { aid: this.$route.query.id }
         }
       );
+      console.log(res);
       this.tableData = res;
     },
     async getMaxPrice() {

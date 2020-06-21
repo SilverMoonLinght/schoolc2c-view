@@ -128,6 +128,7 @@
 
 <script>
 export default {
+  inject: ["reload"],
   data() {
     return {
       releaseAuctionForm: {
@@ -135,9 +136,9 @@ export default {
         skuDesc: "",
         price: "",
         catalog3Id: "",
-        wechat: "",
-        phone: "",
-        qq: "",
+        wechat: null,
+        phone: null,
+        qq: null,
         imgUrl: "",
         starttime: "",
         endtime: ""
@@ -188,6 +189,8 @@ export default {
 
       if (status === 200) {
         this.$Message.success("成功发布拍卖!");
+        this.$refs.releaseAuctionFormRef.resetFields();
+        return this.reload();
       }
     },
     handleChange() {

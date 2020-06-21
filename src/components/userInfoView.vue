@@ -24,6 +24,9 @@
         <el-form-item label="电话" prop="phone">
           <el-input v-model="userInfo.phone"></el-input>
         </el-form-item>
+        <el-form-item label="学校" prop="school">
+          <el-input v-model="userInfo.school"></el-input>
+        </el-form-item>
         <el-form-item label="头像" prop="icon">
           <el-upload
             class="avatar-uploader"

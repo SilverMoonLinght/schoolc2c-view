@@ -50,7 +50,7 @@
               </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item command="c">个人信息</el-dropdown-item>
-                <el-dropdown-item command="g">我的消息</el-dropdown-item>
+
                 <el-dropdown-item command="f">个人商品</el-dropdown-item>
                 <el-dropdown-item command="d">修改密码</el-dropdown-item>
                 <el-dropdown-item command="e">注销</el-dropdown-item>
@@ -72,8 +72,7 @@ export default {
   data() {
     return {
       token: "",
-      circleUrl:
-        "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
+      circleUrl: "",
       rowBox: { width: null },
       dropDown: { margin: null, padding: null },
       userBox: { display: "none" },

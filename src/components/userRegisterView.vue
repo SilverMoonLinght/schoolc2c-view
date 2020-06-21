@@ -55,6 +55,15 @@
           >
           </el-input>
         </el-form-item>
+        <el-form-item prop="school" label="学校">
+          <el-input
+            v-model.number="userRegisterData.school"
+            type="text"
+            placeholder="请输入学校名"
+            clearable
+          >
+          </el-input>
+        </el-form-item>
       </el-form>
       <div class="btns">
         <el-button type="primary" @click="userRegisterBtn">
@@ -76,7 +85,11 @@ export default {
         if (this.userRegisterData.verifypass !== "") {
           this.$refs.userRegisterFormRef.validateField("verifypass");
         }
-        callback();
+        if (!(value.length > 4 && value.length < 21)) {
+          callback(new Error("密码长度应为5~20字符"));
+        } else {
+          callback();
+        }
       }
     };
     var validatePass2 = (rule, value, callback) => {
@@ -104,20 +117,26 @@ export default {
         nickname: "",
         password: "",
         phone: "",
-        verifypass: ""
+        verifypass: "",
+        school: ""
       },
       rules: {
         username: [
-          { required: true, message: "请输入用户名", trigger: "blur" }
+          { required: true, message: "请输入用户名", trigger: "blur" },
+          { min: 6, max: 16, message: "用户名长度为6~16字符", trigger: "blur" }
         ],
-        nickname: [{ required: true, message: "请输入昵称", trigger: "blur" }],
+        nickname: [
+          { required: true, message: "请输入昵称", trigger: "blur" },
+          { min: 6, max: 20, message: "昵称长度为6~18字符", trigger: "blur" }
+        ],
         password: [
           { required: true, validator: validatePass, trigger: "blur" }
         ],
         verifypass: [
           { required: true, validator: validatePass2, trigger: "blur" }
         ],
-        phone: [{ required: true, validator: validatePhone, trigger: "blur" }]
+        phone: [{ required: true, validator: validatePhone, trigger: "blur" }],
+        school: [{ required: true, message: "请输入学校名", trigger: "blur" }]
       }
     };
   },

@@ -9,6 +9,7 @@
       <div class="top-user-info">
         <el-avatar size="medium" :src="item.icon"></el-avatar>
         <span class="top-data">{{ item.username }}</span>
+        <span class="top-data">{{ item.school }}</span>
       </div>
       <div class="item-name">{{ item.productName }}</div>
       <div class="content">
@@ -32,6 +33,7 @@
             fit="contain"
             style="width: 140px; height: 77px"
             @click="dialogVisible = true"
+            v-if="item.imgUrl !== null"
           ></el-image>
           <el-dialog title="预览大图" :visible.sync="dialogVisible" width="30%">
             <span>
@@ -83,6 +85,7 @@ export default {
           params: this.queryInfo
         }
       );
+      console.log(res);
       if (res === null) {
         return this.$Message.error("获取数据失败!");
       }

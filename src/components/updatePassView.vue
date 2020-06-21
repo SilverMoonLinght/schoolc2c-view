@@ -39,7 +39,11 @@ export default {
         if (this.updatePassData.verifyPass !== "") {
           this.$refs.updatePassDataRef.validateField("verifyPass");
         }
-        callback();
+        if (!(value.length > 5 && value.length < 20)) {
+          callback(new Error("密码长度应为5~20字符"));
+        } else {
+          callback();
+        }
       }
     };
     var validatePass2 = (rule, value, callback) => {

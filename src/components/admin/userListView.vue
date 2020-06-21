@@ -45,7 +45,6 @@
             ></el-switch>
           </template>
         </el-table-column>
-        <el-table-column prop="icon" label="头像"></el-table-column>
         <el-table-column prop="gender" label="性别"></el-table-column>
         <el-table-column
           prop="personalizedSignature"
@@ -126,9 +125,6 @@
             <el-radio v-model="addUserForm.status" :label="1">启用</el-radio>
             <el-radio v-model="addUserForm.status" :label="0">禁用</el-radio>
           </el-form-item>
-          <el-form-item label="头像" prop="icon">
-            <el-input v-model="addUserForm.icon"></el-input>
-          </el-form-item>
           <el-form-item label="性别" prop="gender">
             <el-radio v-model="addUserForm.gender" :label="0">保密</el-radio>
             <el-radio v-model="addUserForm.gender" :label="1">男</el-radio>
@@ -171,9 +167,6 @@
           <el-input v-model="editForm.phone"></el-input>
         </el-form-item>
 
-        <el-form-item label="头像" prop="icon">
-          <el-input v-model="editForm.icon"></el-input>
-        </el-form-item>
         <el-form-item label="性别" prop="gender">
           <el-radio-group v-model="editForm.gender">
             <el-radio :label="'0'">保密</el-radio>

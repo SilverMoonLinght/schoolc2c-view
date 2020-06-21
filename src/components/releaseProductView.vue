@@ -7,15 +7,16 @@
         ref="releaseProductFormRef"
         :model="releaseProductForm"
         label-width="80px"
+        :rules="rules"
       >
-        <el-form-item label="商品名称">
+        <el-form-item label="商品名称" prop="skuName">
           <el-input
             placeholder="请输入商品名称"
             v-model="releaseProductForm.skuName"
           >
           </el-input>
         </el-form-item>
-        <el-form-item label="商品简介">
+        <el-form-item label="商品简介" prop="skuDesc">
           <el-input
             type="textarea"
             :rows="4"
@@ -26,7 +27,7 @@
           >
           </el-input>
         </el-form-item>
-        <el-form-item label="价格">
+        <el-form-item label="价格" prop="price">
           <el-input
             style="width:50%"
             placeholder="请输入价格"
@@ -121,8 +122,8 @@ export default {
         price: "",
         catalog3Id: "",
         wechat: "",
-        phone: "",
-        qq: "",
+        phone: null,
+        qq: null,
         imgUrl: ""
       },
       //   级联选择框
@@ -137,7 +138,16 @@ export default {
       disabled: false,
       dialogVisible: false,
       dialogImageUrl: "",
-      token: ""
+      token: "",
+      rules: {
+        skuName: [
+          { required: true, message: "请输入商品名称", trigger: "blur" }
+        ],
+        skuDesc: [
+          { required: true, message: "请输入商品介绍", trigger: "blur" }
+        ],
+        price: [{ required: true, message: "请输入价格", trigger: "blur" }]
+      }
     };
   },
   created() {
@@ -155,18 +165,20 @@ export default {
       );
       this.catalog = resCatalog;
     },
-    async submit() {
-      if (this.token === null) {
-        this.$Message.error("请登录后发布商品!");
-        return this.$router.push("/userLogin?rUrl=" + this.$route.path);
-      }
-      const { data: res } = await this.$http.post(
-        "http://127.0.0.1:8084/releaseProduct",
-        this.releaseProductForm
-      );
-      if (res === 200) {
-        this.$Message.success("成功发布商品!");
-      }
+    submit() {
+      this.$refs.releaseProductFormRef.validate(async valid => {
+        if (this.token === null) {
+          this.$Message.error("请登录后发布商品!");
+          return this.$router.push("/userLogin?rUrl=" + this.$route.path);
+        }
+        const { data: res } = await this.$http.post(
+          "http://127.0.0.1:8084/releaseProduct",
+          this.releaseProductForm
+        );
+        if (res === 200) {
+          this.$Message.success("成功发布商品!");
+        }
+      });
     },
     handleChange() {
       this.releaseProductForm.catalog3Id = this.selectCatalog[

@@ -55,7 +55,7 @@ export default {
       );
       this.boothList = res;
     },
-    async removeBooth(boothInfo) {
+    async removeBooth(booth) {
       //弹框
       const confirmResult = await this.$confirm(
         "此操作将永久删除该摊位, 是否继续?",
@@ -70,9 +70,8 @@ export default {
       if (confirmResult != "confirm") {
         return this.$Message.info("已取消删除");
       }
-
       const { data: res, status: status } = await this.$http
-        .post("/removeBooth", boothInfo)
+        .post("/removeBooth", booth)
         .catch(error => {
           if (error) {
             this.$Message.error("删除失败!");

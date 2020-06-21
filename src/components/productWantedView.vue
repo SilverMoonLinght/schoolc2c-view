@@ -25,14 +25,6 @@
           >
           </el-input>
         </el-form-item>
-        <el-form-item label="价格">
-          <el-input
-            style="width:50%"
-            placeholder="请输入可接受价格"
-            v-model="productWantedForm.price"
-          >
-          </el-input>
-        </el-form-item>
         <el-form-item label="微信">
           <el-input
             style="width:50%"
@@ -108,10 +100,9 @@ export default {
       productWantedForm: {
         productName: "",
         description: "",
-        price: "",
         wechat: "",
-        phone: "",
-        qq: "",
+        phone: null,
+        qq: null,
         imgUrl: ""
       },
       disabled: false,

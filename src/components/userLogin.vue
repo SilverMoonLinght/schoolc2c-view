@@ -70,6 +70,8 @@ export default {
         );
         if (res === "fail") {
           this.$Message.error("用户名或密码错误");
+        } else if (res === "ban") {
+          this.$Message.error("账户被封禁");
         } else {
           localStorage.setItem("token", res);
           if (this.url) {

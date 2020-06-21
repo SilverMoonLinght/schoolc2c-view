@@ -1,6 +1,6 @@
 <template>
   <div class="contain">
-    <div class="left" v-if="boothId !== null">
+    <div class="left">
       <el-card :body-style="{ padding: '0px' }">
         <div class="left-header">
           <div>
@@ -21,7 +21,7 @@
             <div style="margin-left:10px" v-if="boothId === null">
               <p>您还没有摊位</p>
             </div>
-            <div style="margin:13px 10px 0 0">
+            <div style="margin:13px 10px 0 0;display:flex">
               <el-tooltip
                 effect="dark"
                 content="创建摊位"
@@ -62,6 +62,7 @@
                   class="btn"
                   icon="el-icon-delete"
                   v-if="boothId !== null"
+                  @click="clearBoothProduct"
                 ></el-button>
               </el-tooltip>
             </div>
@@ -403,6 +404,31 @@ export default {
         return this.$Message.error("添加失败!");
       }
     },
+    async clearBoothProduct() {
+      const confirmResult = await this.$confirm("是否清空摊位！", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).catch(err => err);
+
+      if (confirmResult != "confirm") {
+        return this.$Message.info("已取消删除");
+      }
+      const { data: res } = await this.$http
+        .get("http://127.0.0.1:8084/clearBoothProduct", {
+          params: { bid: this.boothId }
+        })
+        .catch(error => {
+          if (error) {
+            return this.$Message.error("清空失败！");
+          }
+        });
+
+      if (res === "success") {
+        this.$Message.success("清空成功!");
+        this.reload();
+      }
+    },
     addBoothProductClosed() {
       this.$refs.addBoothProductFormRef.resetFields();
       this.$refs.uploadRef.clearFiles();
@@ -487,7 +513,7 @@ export default {
   display: flex;
 }
 .left {
-  width: 22%;
+  width: 40%;
   height: 400px;
 }
 .right {
